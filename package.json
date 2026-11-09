@@ -1,0 +1,27 @@
+{
+  "name": "ai-career-coach-workspace",
+  "version": "1.0.0",
+  "description": "AI Career Coach SaaS Platform Workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "test": "npm --prefix frontend test",
+    "lint": "npm --prefix frontend run lint",
+    "preview": "npm --prefix frontend run preview",
+    "frontend:install": "npm --prefix frontend install",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "backend:dev": "python backend/run.py",
+    "backend:test": "pytest backend/tests -v"
+  },
+  "keywords": [
+    "ai-career-coach",
+    "saas",
+    "react",
+    "flask",
+    "typescript"
+  ],
+  "author": "Maheswari Pinneti",
+  "license": "MIT"
+}
