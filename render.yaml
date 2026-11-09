@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ai-career-coach-api
+    runtime: python
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt && flask db upgrade"
+    startCommand: "gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 4 --timeout 120"
+    plan: starter
+    healthCheckPath: /api/v1/health
+    disk:
+      name: sqlite-storage
+      mountPath: /app/instance
+      sizeGB: 1
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: DATABASE_URL
+        value: sqlite:////app/instance/ai_career_coach.db
+      - key: AI_PROVIDER
+        value: mock
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false

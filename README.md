@@ -1,154 +1,211 @@
-# 🤖 AI Career Coach Chatbot
+# 🤖 AI Career Coach SaaS Platform
+
+[![CI Pipeline](https://github.com/maheswari-pinneti/-AI-Career-Coach-Chatbot/actions/workflows/ci.yml/badge.svg)](https://github.com/maheswari-pinneti/-AI-Career-Coach-Chatbot/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Phase 1: Foundation](https://img.shields.io/badge/Phase%201-Verified%20Foundation-brightgreen)](DEVELOPMENT_STATUS.md)
+
+An enterprise-grade, full-stack AI SaaS platform designed to accelerate career growth, resume scoring, LinkedIn profile optimization, and mock interview preparation.
+
+Built with **React 18 + TypeScript + Vite + Material UI v5** on the client, and **Flask 3 (Application Factory) + SQLAlchemy ORM + SQLite / PostgreSQL** on the backend.
 
 ---
 
-**An interactive chatbot built using React & Flask that helps users with resume feedback, LinkedIn optimization, and job interview preparation.**
-
-> 💡 Powered by LLaMA-3 mock responses (can be extended to Hugging Face models or OpenAI API).
-
----
-
-## 📌 Project Overview
-
-The **AI Career Coach Chatbot** simulates a conversational assistant that helps job seekers with:
-- Resume improvement tips
-- LinkedIn profile optimization
-- Job interview preparation guidance
-
-This is a full-stack project demonstrating real-time communication between a **React frontend** and a **Flask backend**, built with modularity and clarity for learning, deployment, and expansion.
-
----
-
-## 🚀 Demo
-
-📍 Run locally: `http://localhost:3000`  
-🧠 Ask: *"How to improve my resume?"*, *"Tips for LinkedIn?"*, or *"Interview prep help?"*
-
----
-
-## 🗂️ Project Structure
+## 📌 Architecture Overview
 
 ```
++-----------------------------------------------------------------+
+|                       Client Tier (SPA)                         |
+|   React 18 + TypeScript + Vite + MUI v5 + RTK + TanStack Query   |
++--------------------------------+--------------------------------+
+                                 | HTTPS / REST JSON
+                                 v
++-----------------------------------------------------------------+
+|                       Backend API Tier                          |
+|         Flask 3 (App Factory) + Blueprints (/api/v1)            |
+|   - CORS & Centralized Error Handlers (400, 404, 405, 422, 500) |
+|   - Bcrypt Password Hashing & Structured Logging                |
++--------------------------------+--------------------------------+
+                                 | SQLAlchemy 2.x
+                                 v
++-----------------------------------------------------------------+
+|                       Database Tier                             |
+|     SQLite 3 (Dev/Test) -> PostgreSQL (Production Cloud)        |
+|   - PRAGMA foreign_keys = ON & Alembic Migrations               |
++-----------------------------------------------------------------+
+```
 
-career-coach-chatbot/
-├── frontend/               # React Frontend (Chat UI)
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **Runtime & Build**: [React 18](https://react.dev/), [TypeScript 5](https://www.typescriptlang.org/) (Strict Mode), [Vite 5](https://vitejs.dev/)
+- **UI & Design System**: [Material UI v5](https://mui.com/), [Emotion](https://emotion.sh/), [Lucide React](https://lucide.dev/)
+- **State & Data**: [Redux Toolkit](https://redux-toolkit.js.org/), [TanStack Query v5](https://tanstack.com/query), [Axios](https://axios-http.com/)
+- **Forms & Validation**: [React Hook Form](https://react-hook-form.com/), [Zod](https://zod.dev/)
+- **Testing & Quality**: [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/), [ESLint](https://eslint.org/), [Prettier](https://prettier.io/)
+
+### Backend
+- **Framework**: [Flask 3](https://flask.palletsprojects.com/) (Application Factory pattern)
+- **Database & ORM**: [SQLAlchemy 2.x](https://www.sqlalchemy.org/), [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/), [Flask-Migrate](https://flask-migrate.readthedocs.io/) (Alembic)
+- **Security & Utilities**: `bcrypt`, `PyJWT`, `python-dotenv`, `Flask-CORS`
+- **Testing**: `pytest`, `pytest-cov`
+- **Deployment**: `Docker`, `Docker Compose`, `Nginx`, `Gunicorn`
+
+---
+
+## 🗂️ Project Directory Layout
+
+```
+AI-Career-Coach/
+├── .github/
+│   └── workflows/
+│       └── ci.yml               # GitHub Actions CI workflow
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── v1/              # API v1 routes & health check
+│   │   ├── models/              # SQLAlchemy User entity model
+│   │   ├── extensions.py        # SQLAlchemy, Migrate, CORS
+│   │   ├── settings.py          # Environment configs (dev, test, prod)
+│   │   └── __init__.py          # Application Factory (create_app)
+│   ├── migrations/              # Alembic database migration scripts
+│   ├── tests/                   # Pytest automated test suite
+│   ├── requirements.txt         # Backend Python dependencies
+│   ├── run.py                   # Development entry point
+│   └── wsgi.py                  # WSGI entry point for production
+├── docs/                        # Architecture & Setup guides (01 - 06)
+├── frontend/
 │   ├── src/
-│   │   ├── App.js
-│   │   └── App.css
-├── backend/                # Flask Backend (API + LLaMA mock logic)
-│   ├── app.py
-│   ├── requirements.txt
-│   └── venv/
-└── README.md               # Project Documentation
-
-````
-
----
-
-## 🧑‍💻 Technologies Used
-
-### Frontend:
-- React.js (Functional components, Hooks)
-- Vanilla CSS
-
-### Backend:
-- Flask (REST API)
-- flask-cors
-- Transformers & Torch (mocking LLaMA-3, extendable to Hugging Face)
-- sentence-transformers + FAISS (planned semantic search support)
-
----
-
-## 🛠️ Setup Instructions
-
-### ⚙️ Prerequisites
-Ensure you have:
-- Node.js & npm
-- Python 3.7+
-- `pip` & `venv`
+│   │   ├── api/                 # Axios client instance & interceptors
+│   │   ├── components/          # Reusable shell (Header, Sidebar, ErrorBoundary)
+│   │   ├── layouts/             # Main responsive layout shell
+│   │   ├── pages/               # Overview, Health check, and placeholder routes
+│   │   ├── routes/              # React Router v6 tree
+│   │   ├── store/               # Redux Toolkit store and UI slices
+│   │   ├── theme/               # Material UI Light & Dark theme definitions
+│   │   └── test/                # Vitest & Testing Library suites
+│   ├── package.json             # Frontend dependencies & scripts
+│   ├── tsconfig.json            # Strict TypeScript configuration
+│   └── vite.config.ts           # Vite build & alias configurations
+├── infrastructure/
+│   ├── Dockerfile.backend       # Multi-stage Python build
+│   ├── Dockerfile.frontend      # Multi-stage Vite build + Nginx
+│   └── nginx.conf               # Nginx reverse proxy configuration
+├── scripts/
+│   └── init_db.py               # SQLite database initializer & verification
+├── .gitignore                   # Version control ignore rules
+├── CHANGELOG.md                 # Semantic version changelog
+├── DEVELOPMENT_STATUS.md        # Comprehensive phase implementation status
+├── docker-compose.yml           # Local multi-container orchestration
+└── README.md                    # Project documentation
+```
 
 ---
 
-### 🧪 1. Clone the Repo
+## 🚀 Quickstart & Local Development
+
+### 1. Prerequisites
+- **Node.js**: v18+ (tested on v20, v24)
+- **Python**: 3.10+ (tested on 3.11, 3.13, 3.14)
+- **npm** or **pnpm**
+
+---
+
+### 2. Backend Setup
 
 ```bash
-git clone https://github.com/your-username/career-coach-chatbot.git
-cd career-coach-chatbot
-````
+cd backend
+
+# Create & activate virtual environment
+python -m venv .venv
+
+# Windows PowerShell
+.\.venv\Scripts\Activate.ps1
+# macOS/Linux
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables
+cp .env.example .env
+
+# Initialize database & run migrations
+flask db upgrade
+
+# Run tests
+pytest -v
+
+# Start development server (http://localhost:5000)
+python run.py
+```
+
+Verify backend health:
+```bash
+curl http://127.0.0.1:5000/api/v1/health
+```
+
+Expected output:
+```json
+{
+  "success": true,
+  "message": "AI Career Coach API is running",
+  "version": "1.0.0"
+}
+```
 
 ---
 
-### 🖼️ 2. Frontend Setup (React)
+### 3. Frontend Setup
 
 ```bash
 cd frontend
-npm install
-npm start
-```
 
-Visit [http://localhost:3000](http://localhost:3000)
+# Install dependencies
+npm install
+
+# Configure environment variables
+cp .env.example .env
+
+# Run type check, linter & tests
+npx tsc --noEmit
+npm run lint
+npm test
+
+# Build for production
+npm run build
+
+# Start Vite dev server (http://localhost:5173)
+npm run dev
+```
 
 ---
 
-### 🔌 3. Backend Setup (Flask)
+### 4. Running via Docker Compose
 
 ```bash
-cd ../backend
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
+# Build and launch all containers
+docker-compose up --build
 ```
 
-Your API will run at `http://localhost:5000`
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:5000/api/v1/health`
 
 ---
 
-### 🔄 Testing Locally
+## 📚 Technical Documentation
 
-1. Run backend: `python app.py`
-2. Run frontend: `npm start` in the `frontend` folder
-3. Open browser → `localhost:3000`
-4. Try asking:
-
-   * `How to improve my LinkedIn profile?`
-   * `Resume feedback please`
-   * `Help me prep for interviews`
-
----
-
-## 🔮 Future Enhancements
-
-* ✅ Replace mock responses with actual LLaMA-3 or OpenAI/Gemini API
-* 🧠 Add semantic search with FAISS & vector embeddings
-* 💾 Store chats for analytics and progress tracking
-* 🌐 Deploy to Vercel (frontend) + Render/AWS/GCP (backend)
-
----
-
-## 🤝 Contribution Guide
-
-Contributions are welcome!
-Feel free to:
-
-* Fork this repo
-* Open an Issue for suggestions
-* Submit a Pull Request for improvements or new features
+Detailed architectural and setup guides can be found in `docs/`:
+- [01 — Project Overview](docs/01-project-overview.md)
+- [02 — System Architecture](docs/02-system-architecture.md)
+- [03 — Frontend Setup Guide](docs/03-frontend-setup.md)
+- [04 — Backend Setup Guide](docs/04-backend-setup.md)
+- [05 — Database Setup & Migrations](docs/05-database-setup.md)
+- [06 — Environment Configuration](docs/06-environment-configuration.md)
 
 ---
 
 ## 📜 License
 
-MIT License — use it, modify it, share it.
-Please credit the original author when using this repo in public work.
-
----
-
-## 🙋‍♀️ About the Author
-
-Made with 💚 by **[Maheswari Pinneti](https://github.com/maheswari-pinneti)**
-An aspiring Web Developer | AI Enthusiast | Frontend Specialist
-🌐 Portfolio: [maheswari-pinneti.github.io](https://maheswari-pinneti.github.io)
-
----
-
+MIT License — free to use and adapt. Made by [Maheswari Pinneti](https://github.com/maheswari-pinneti).
