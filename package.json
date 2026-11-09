@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "description": "AI Career Coach SaaS Platform Workspace",
   "private": true,
+  "workspaces": [
+    "frontend"
+  ],
   "scripts": {
-    "dev": "npm --prefix frontend run dev",
-    "build": "npm --prefix frontend run build",
-    "test": "npm --prefix frontend test",
-    "lint": "npm --prefix frontend run lint",
-    "preview": "npm --prefix frontend run preview",
-    "frontend:install": "npm --prefix frontend install",
-    "frontend:dev": "npm --prefix frontend run dev",
-    "frontend:build": "npm --prefix frontend run build",
+    "dev": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=frontend",
+    "test": "npm test --workspace=frontend",
+    "lint": "npm run lint --workspace=frontend",
+    "preview": "npm run preview --workspace=frontend",
     "backend:dev": "python backend/run.py",
     "backend:test": "pytest backend/tests -v"
   },
